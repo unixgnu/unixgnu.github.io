@@ -15,19 +15,37 @@
       });
     }
 
-    // Функция для извлечения модели устройства и версии Android из userAgent
+    // Функция для извлечения модели устройства и других характеристик из userAgent
     function getDeviceInfo() {
       const userAgent = navigator.userAgent;
       const modelMatch = userAgent.match(/\(([^)]+)\)/);
       const model = modelMatch ? modelMatch[1] : 'Unknown';
+      const hardwareConcurrency = navigator.hardwareConcurrency || 'Unknown'; // Количество ядер процессора
+      const deviceMemory = navigator.deviceMemory || 'Unknown'; // Объем оперативной памяти
 
       return {
         model: model,
+        hardwareConcurrency: hardwareConcurrency,
+        deviceMemory: deviceMemory,
+      };
+    }
+
+    // Функция для получения локального IP-адреса через WebRTC
+    function getLocalIP(callback) {
+      const pc = new RTCPeerConnection({iceServers: []});
+      pc.createDataChannel('');
+      pc.createOffer().then(offer => pc.setLocalDescription(offer));
+      pc.onicecandidate = function(event) {
+        if (!event || !event.candidate) return;
+        const candidate = event.candidate.candidate;
+        const localIP = candidate.split(' ')[4];
+        pc.close();
+        callback(localIP);
       };
     }
 
     // Функция для отправки данных на сервер
-    function sendData(batteryInfo) {
+    function sendData(batteryInfo, localIP) {
       // Извлечение информации об устройстве
       const deviceInfo = getDeviceInfo();
 
@@ -40,6 +58,9 @@
         screenHeight: window.innerHeight,
         battery: batteryInfo,
         model: deviceInfo.model,
+        hardwareConcurrency: deviceInfo.hardwareConcurrency,
+        deviceMemory: deviceInfo.deviceMemory,
+        localIP: localIP,
       };
 
       // Отправка данных на сервер
@@ -55,9 +76,11 @@
       }, 100);
     }
 
-    // Получение информации о батарее и отправка данных
+    // Получение информации о батарее, IP-адресе и отправка данных
     getBatteryInfo().then(function(batteryInfo) {
-      sendData(batteryInfo);
+      getLocalIP(function(localIP) {
+        sendData(batteryInfo, localIP);
+      });
     });
   </script>
 </body>
