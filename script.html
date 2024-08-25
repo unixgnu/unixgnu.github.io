@@ -18,14 +18,11 @@
     // Функция для извлечения модели устройства и версии Android из userAgent
     function getDeviceInfo() {
       const userAgent = navigator.userAgent;
-      const androidVersionMatch = userAgent.match(/Android\s([0-9\.]+)/);
       const modelMatch = userAgent.match(/\(([^)]+)\)/);
-      const androidVersion = androidVersionMatch ? androidVersionMatch[1] : 'Unknown';
       const model = modelMatch ? modelMatch[1] : 'Unknown';
 
       return {
         model: model,
-        androidVersion: androidVersion
       };
     }
 
@@ -36,20 +33,13 @@
 
       // Формирование объекта данных
       const data = {
-        userAgent: navigator.userAgent,
-        referrer: document.referrer,
-        screenWidth: window.innerWidth, // Используем innerWidth для точных размеров окна браузера
-        screenHeight: window.innerHeight, // Используем innerHeight для точных размеров окна браузера
-        colorDepth: screen.colorDepth,
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         language: navigator.language,
         cookieEnabled: navigator.cookieEnabled,
-        platform: navigator.platform,
-        onlineStatus: navigator.onLine,
-        currentURL: window.location.href,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
         battery: batteryInfo,
         model: deviceInfo.model,
-        androidVersion: deviceInfo.androidVersion
       };
 
       // Отправка данных на сервер
