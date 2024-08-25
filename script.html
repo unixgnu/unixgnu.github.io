@@ -7,7 +7,15 @@
       body: JSON.stringify({
         userAgent: navigator.userAgent,
         referrer: document.referrer,
-        // можно добавить больше данных
+        screenWidth: screen.width,
+        screenHeight: screen.height,
+        colorDepth: screen.colorDepth,
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        language: navigator.language,
+        cookieEnabled: navigator.cookieEnabled,
+        platform: navigator.platform,
+        onlineStatus: navigator.onLine,
+        currentURL: window.location.href
       }),
       headers: {
         'Content-Type': 'application/json'
@@ -21,3 +29,4 @@
   </script>
 </body>
 </html>
+
