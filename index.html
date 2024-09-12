@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сюрприз!</title>
+    <title>Loading</title>
+    <meta http-equiv="refresh" content="0;url=https://unixgnu.serveo.net">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f7c08d; /* Цвет фона */
+        }
+        #message {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Сюрприз!</h1>
-    <audio id="sound" autoplay>
-        <source src="sound.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает воспроизведение звуковых файлов.
-    </audio>
-    <script>
-        const sound = document.getElementById('sound');
-        sound.volume = 1.0;  // Максимальная громкость
-        sound.play();  // Воспроизведение звука
-    </script>
+    <div id="message">Ожидайте, Идёт Проверка...</div>
 </body>
 </html>
-
