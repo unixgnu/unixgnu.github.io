@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading</title>
-    <meta http-equiv="refresh" content="0;url=https://unixgnu.serveo.net">
+    <title>UnixGNU tgk</title>
     <style>
         body {
             display: flex;
@@ -14,15 +13,53 @@
             margin: 0;
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #f7c08d; /* Цвет фона */
+            background-color: #f7c08d;
         }
-        #message {
-            font-size: 24px;
-            font-weight: bold;
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #d35400;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #e67e22;
         }
     </style>
 </head>
 <body>
-    <div id="message">Ожидайте, Идёт Проверка...</div>
+    <div id="container">
+        <h1>Welcome!</h1>
+        <button onclick="playSound()">ПЕРЕЙТИ В КАНАЛ</button>
+    </div>
+    
+    <audio id="sound">
+        <source src="sound.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает воспроизведение звуковых файлов.
+    </audio>
+
+    <script>
+        function playSound() {
+            const sound = document.getElementById('sound');
+            sound.volume = 1.0;
+            sound.play();
+
+            setTimeout(() => {
+                window.location.href = 'https://t.me/unixgnutgk';
+            }, 2000);
+        }
+    </script>
 </body>
 </html>
