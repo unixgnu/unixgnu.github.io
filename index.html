@@ -3,66 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pandora</title>
+    <title>Пандора</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #000000;
-            background-image: url('eye1.png'); /* Фон страницы с глазом */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background: linear-gradient(120deg, #000000, #2c2c54);
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            overflow: hidden;
         }
 
         #container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
         h1 {
-            color: #ffffff;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0000;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 18px;
-            color: #ffffff;
-            background-color: #8f0101;
+            background: #8f0101;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            padding: 15px 30px;
             cursor: pointer;
-            transition: background 0.3s ease;
-            margin-top: 20px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
         }
 
-        /* Фон кнопки меняется на изображение при наведении */
         button:hover {
-            background-image: url('eye.jpg'); /* Путь к твоему изображению */
-            background-size: cover; /* Изображение полностью покрывает кнопку */
-            background-position: center; /* Центрирование изображения */
-            color: transparent; /* Текст становится невидимым, чтобы не мешать изображению */
+            transform: scale(1.1);
+            background: #ff4500;
+        }
+
+        button:active {
+            transform: scale(0.9);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Анимация фона */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('eye1.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
     <div id="container">
-        <h1>дальше бога нет</h1>
-        <button onclick="playSound()">глянуть одним глазком</button>
+        <h1>Дальше Бога нет</h1>
+        <button onclick="playSound()">Глянуть одним глазком</button>
     </div>
-    
+
     <audio id="sound">
         <source src="sound.mp3" type="audio/mpeg">
-        Ваш браузер говно
+        Ваш браузер не поддерживает аудио.
     </audio>
 
     <script>
