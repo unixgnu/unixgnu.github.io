@@ -16,13 +16,11 @@
             font-family: 'Arial', sans-serif;
             color: #fff;
             overflow: hidden;
-            position: relative;
         }
 
         #container {
             text-align: center;
             animation: fadeIn 1.5s ease-in-out;
-            z-index: 1;
         }
 
         h1 {
@@ -77,27 +75,6 @@
             opacity: 0.3;
             z-index: -1;
         }
-
-        /* Частицы на заднем фоне */
-        .particle {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: #ff0000;
-            border-radius: 50%;
-            animation: moveParticles 5s infinite linear;
-        }
-
-        @keyframes moveParticles {
-            0% {
-                transform: translateX(0) translateY(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translateX(100vw) translateY(100vh);
-                opacity: 0;
-            }
-        }
     </style>
 </head>
 <body>
@@ -121,33 +98,6 @@
                 window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
             }, 2000);
         }
-
-        // Функция для генерации частиц
-        function generateParticles() {
-            const numParticles = 50; // Количество частиц
-            for (let i = 0; i < numParticles; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-
-                // Случайная позиция и анимация для каждой частицы
-                const posX = Math.random() * window.innerWidth;
-                const posY = Math.random() * window.innerHeight;
-
-                particle.style.left = `${posX}px`;
-                particle.style.top = `${posY}px`;
-                particle.style.animationDuration = `${Math.random() * 3 + 2}s`; // Случайная скорость
-
-                document.body.appendChild(particle);
-
-                // Удаляем частицы через некоторое время, чтобы не перегружать DOM
-                setTimeout(() => {
-                    particle.remove();
-                }, 5000); // Удаляем через 5 секунд
-            }
-        }
-
-        // Генерация частиц каждые 0.1 секунды
-        setInterval(generateParticles, 100);
     </script>
 </body>
 </html>
