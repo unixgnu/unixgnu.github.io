@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пандора</title>
+    <title>Министерство виртуальных проблем</title>
     <style>
         body {
             margin: 0;
@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(120deg, #000000, #2c2c54);
+            background: linear-gradient(120deg, #4b0082, #8a2be2);
             font-family: 'Arial', sans-serif;
             color: #fff;
             overflow: hidden;
@@ -26,24 +26,24 @@
         h1 {
             font-size: 2rem;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px #ff0000;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff;
         }
 
         button {
-            background: #8f0101;
+            background: #7a1f96;
             border: none;
             border-radius: 10px;
             color: #fff;
-            font-size: 1.2rem;
-            padding: 15px 30px;
+            font-size: 1.5rem;
+            padding: 20px 40px;
             cursor: pointer;
             transition: transform 0.2s ease, background-color 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(255, 0, 255, 0.5);
         }
 
         button:hover {
             transform: scale(1.1);
-            background: #ff4500;
+            background: #9b4de0;
         }
 
         button:active {
@@ -69,34 +69,34 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('eye1.png');
+            background-image: url('eye_background.png');
             background-size: cover;
             background-position: center;
-            opacity: 0.3;
+            opacity: 0.4;
             z-index: -1;
         }
     </style>
 </head>
 <body>
     <div id="container">
-        <h1>Дальше Бога нет</h1>
-        <button onclick="playSound()">Глянуть одним глазком</button>
+        <h1>Ваши виртуальные вопросы решаются!</h1>
+        <button onclick="handleClick()">Подать заявку</button>
     </div>
 
     <audio id="sound">
-        <source src="sound.mp3" type="audio/mpeg">
+        <source src="click_sound.mp3" type="audio/mpeg">
         Ваш браузер не поддерживает аудио.
     </audio>
 
     <script>
-        function playSound() {
+        function handleClick() {
             const sound = document.getElementById('sound');
             sound.volume = 1.0;
             sound.play();
 
             setTimeout(() => {
-                window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-            }, 2000);
+                alert('Заявка принята. Ожидайте решения в течение 3 рабочих лет!');
+            }, 1500);
         }
     </script>
 </body>
