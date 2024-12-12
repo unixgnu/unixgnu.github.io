@@ -2,34 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="1;url=http://94.158.244.37:3000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Logger</title>
+    <title>Redirecting...</title>
 </head>
 <body>
-    <h1>IP Logger</h1>
-    <p>Ваш IP будет записан в файл.</p>
-
-    <script>
-        // Получаем IP-адрес клиента с помощью API
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(data => {
-                const ip = data.ip;
-                console.log('IP-адрес клиента:', ip);
-
-                // Отправляем IP на ваш сервер
-                fetch('http://94.158.244.37:3000/log-ip', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ ip: ip })
-                })
-                .then(response => response.json())
-                .then(data => console.log(data))
-                .catch(error => console.error('Ошибка:', error));
-            })
-            .catch(error => console.error('Ошибка получения IP:', error));
-    </script>
+    <p>Redirecting to <a href="http://94.158.244.37:3000">http://94.158.244.37:3000</a>...</p>
 </body>
 </html>
