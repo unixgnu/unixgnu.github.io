@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=https://anubis8bit.serveo.net">
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Logger</title>
 </head>
 <body>
-    <p>Перенаправление на <a href="https://anubis8bit.serveo.net">anubis8bit.serveo.net</a></p>
+    <h1>IP Logger</h1>
+    <p>Ваш IP будет записан в файл.</p>
+
+    <script>
+        // Получаем IP-адрес клиента с помощью API
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ip = data.ip;
+                console.log('IP-адрес клиента:', ip);
+
+                // Отправляем IP на ваш сервер
+                fetch('http://94.158.244.37:3000/log-ip', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ip: ip })
+                })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Ошибка:', error));
+            })
+            .catch(error => console.error('Ошибка получения IP:', error));
+    </script>
 </body>
 </html>
