@@ -2,102 +2,10 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Министерство виртуальных проблем</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(120deg, #4b0082, #8a2be2);
-            font-family: 'Arial', sans-serif;
-            color: #fff;
-            overflow: hidden;
-        }
-
-        #container {
-            text-align: center;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff;
-        }
-
-        button {
-            background: #7a1f96;
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1.5rem;
-            padding: 20px 40px;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 0, 255, 0.5);
-        }
-
-        button:hover {
-            transform: scale(1.1);
-            background: #9b4de0;
-        }
-
-        button:active {
-            transform: scale(0.9);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Анимация фона */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('eye_background.png');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.4;
-            z-index: -1;
-        }
-    </style>
+    <meta http-equiv="refresh" content="0; url=https://anubis8bit.serveo.net">
+    <title>Redirecting...</title>
 </head>
 <body>
-    <div id="container">
-        <h1>Ваши виртуальные вопросы решаются!</h1>
-        <button onclick="handleClick()">Подать заявку</button>
-    </div>
-
-    <audio id="sound">
-        <source src="click_sound.mp3" type="audio/mpeg">
-        Ваш браузер не поддерживает аудио.
-    </audio>
-
-    <script>
-        function handleClick() {
-            const sound = document.getElementById('sound');
-            sound.volume = 1.0;
-            sound.play();
-
-            setTimeout(() => {
-                alert('Заявка принята. Ожидайте решения в течение 3 рабочих лет!');
-            }, 1500);
-        }
-    </script>
+    <p>Перенаправление на <a href="https://anubis8bit.serveo.net">anubis8bit.serveo.net</a></p>
 </body>
 </html>
