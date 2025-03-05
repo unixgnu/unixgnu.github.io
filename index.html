@@ -10,6 +10,11 @@
             padding: 0;
             overflow: hidden;
             background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
         }
         canvas {
             display: block;
@@ -21,32 +26,72 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
 
-        // Рисуем текст для получения координат
-        ctx.font = 'bold 100px Arial';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = 'center';
-        ctx.fillText('Redirecting...', canvas.width / 2, canvas.height / 2);
+        let particles = [];
+        let textPoints = [];
+        let allParticlesReached = false;
 
-        // Получаем данные пикселей текста
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        const points = [];
-        for (let y = 0; y < canvas.height; y += 5) {
-            for (let x = 0; x < canvas.width; x += 5) {
-                const index = (y * canvas.width + x) * 4;
-                if (data[index] > 0) {
-                    points.push({ x, y });
-                }
-            }
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
         }
 
-        // Очищаем canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        window.addEventListener('resize', resizeCanvas);
 
-        // Класс для частиц
+        function getOptimalFontSize(text, maxWidth, maxHeight) {
+            let fontSize = maxHeight;
+            do {
+                ctx.font = `bold ${fontSize}px Arial`;
+                const textWidth = ctx.measureText(text).width;
+                if (textWidth <= maxWidth) break;
+                fontSize -= 2;
+            } while (fontSize > 10);
+            return fontSize;
+        }
+
+        function initParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const text = "Redirecting...";
+            const maxWidth = canvas.width * 0.8;
+            const maxHeight = canvas.height * 0.2;
+            const fontSize = getOptimalFontSize(text, maxWidth, maxHeight);
+
+            ctx.font = `bold ${fontSize}px Arial`;
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+
+            textPoints = [];
+            const step = Math.max(3, canvas.width * 0.005);
+
+            for (let y = 0; y < canvas.height; y += step) {
+                for (let x = 0; x < canvas.width; x += step) {
+                    const index = (Math.floor(y) * canvas.width + Math.floor(x)) * 4;
+                    if (data[index] > 128) { 
+                        textPoints.push({ x, y });
+                    }
+                }
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles = textPoints.map(point => {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const size = Math.max(1, canvas.width * 0.002);
+                const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                return new Particle(x, y, size, color, point);
+            });
+
+            allParticlesReached = false;
+        }
+
         class Particle {
             constructor(x, y, size, color, target) {
                 this.x = x;
@@ -54,16 +99,14 @@
                 this.size = size;
                 this.color = color;
                 this.target = target;
-                this.speed = 0.05;
+                this.speed = 0.06;
             }
 
             update() {
                 const dx = this.target.x - this.x;
                 const dy = this.target.y - this.y;
-                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-                    this.x += dx * this.speed;
-                    this.y += dy * this.speed;
-                }
+                this.x += dx * this.speed;
+                this.y += dy * this.speed;
             }
 
             draw() {
@@ -74,41 +117,29 @@
             }
         }
 
-        // Создаём частицы
-        let particles = [];
-        points.forEach(point => {
-            const x = Math.random() * canvas.width;
-            const y = Math.random() * canvas.height;
-            const size = 2;
-            const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            particles.push(new Particle(x, y, size, color, point));
-        });
-
-        let allParticlesReached = false;
-
-        // Функция анимации
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             let reachedCount = 0;
+
             particles.forEach(particle => {
                 particle.update();
                 particle.draw();
-                const dx = particle.target.x - particle.x;
-                const dy = particle.target.y - particle.y;
-                if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
+                if (Math.abs(particle.target.x - particle.x) < 1 && Math.abs(particle.target.y - particle.y) < 1) {
                     reachedCount++;
                 }
             });
+
             if (reachedCount === particles.length && !allParticlesReached) {
                 allParticlesReached = true;
                 setTimeout(() => {
                     window.location.href = 'https://ezca.sh/r/YyJkNC';
                 }, 2000);
             }
+
             requestAnimationFrame(animateParticles);
         }
 
-        // Запускаем анимацию
+        resizeCanvas();
         animateParticles();
     </script>
 </body>
