@@ -3,14 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔄 Перенаправление...</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Перенаправление</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="glitch" data-text="ПЕРЕНАПРАВЛЕНИЕ...">ПЕРЕНАПРАВЛЕНИЕ...</h1>
-        <canvas id="matrixCanvas"></canvas>
-    </div>
-    <script src="script.js"></script>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Рисуем текст для получения координат
+        ctx.font = 'bold 100px Arial';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Redirecting...', canvas.width / 2, canvas.height / 2);
+
+        // Получаем данные пикселей текста
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        const points = [];
+        for (let y = 0; y < canvas.height; y += 5) {
+            for (let x = 0; x < canvas.width; x += 5) {
+                const index = (y * canvas.width + x) * 4;
+                if (data[index] > 0) {
+                    points.push({ x, y });
+                }
+            }
+        }
+
+        // Очищаем canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Класс для частиц
+        class Particle {
+            constructor(x, y, size, color, target) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.color = color;
+                this.target = target;
+                this.speed = 0.05;
+            }
+
+            update() {
+                const dx = this.target.x - this.x;
+                const dy = this.target.y - this.y;
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    this.x += dx * this.speed;
+                    this.y += dy * this.speed;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        // Создаём частицы
+        let particles = [];
+        points.forEach(point => {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            const size = 2;
+            const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            particles.push(new Particle(x, y, size, color, point));
+        });
+
+        let allParticlesReached = false;
+
+        // Функция анимации
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let reachedCount = 0;
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+                const dx = particle.target.x - particle.x;
+                const dy = particle.target.y - particle.y;
+                if (Math.abs(dx) < 1 && Math.abs(dy) < 1) {
+                    reachedCount++;
+                }
+            });
+            if (reachedCount === particles.length && !allParticlesReached) {
+                allParticlesReached = true;
+                setTimeout(() => {
+                    window.location.href = 'https://ezca.sh/r/YyJkNC';
+                }, 2000);
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Запускаем анимацию
+        animateParticles();
+    </script>
 </body>
 </html>
